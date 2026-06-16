@@ -49,14 +49,6 @@
       "matchPackageNames": [
         "*"
       ]
-    },
-    {
-      "description": "Group every Alpine source (FROM lines, base.name label, metadata test) into one PR, including major bumps",
-      "matchPackageNames": [
-        "alpine"
-      ],
-      "groupName": "alpine",
-      "groupSlug": "alpine"
     }
   ],
   "customManagers": [
