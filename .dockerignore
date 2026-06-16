@@ -1,0 +1,48 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+LICENSE*
+docs/
+
+# CI/CD
+.github/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+# Test files
+test/
+
+# Examples
+examples/
+
+# Terraform state and local artifacts
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+build/
+dist/
+*.log

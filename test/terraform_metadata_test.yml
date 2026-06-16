@@ -1,0 +1,25 @@
+schemaVersion: 2.0.0
+
+metadataTest:
+  # OCI labels - these match values defined in the Dockerfile
+  labels:
+    - key: 'org.opencontainers.image.title'
+      value: 'Terraform on Alpine Linux'
+    - key: 'org.opencontainers.image.description'
+      value: 'Lightweight Terraform CLI Docker image built on Alpine Linux'
+    - key: 'org.opencontainers.image.vendor'
+      value: 'ragedunicorn'
+    - key: 'org.opencontainers.image.authors'
+      value: 'Michael Wiesendanger <michael.wiesendanger@gmail.com>'
+    - key: 'org.opencontainers.image.source'
+      value: 'https://github.com/RagedUnicorn/docker-terraform'
+    - key: 'org.opencontainers.image.documentation'
+      value: 'https://github.com/RagedUnicorn/docker-terraform/blob/master/README.md'
+    - key: 'org.opencontainers.image.licenses'
+      value: 'MIT'
+    - key: 'org.opencontainers.image.base.name'
+      value: 'docker.io/library/alpine:3.22.1'
+  entrypoint: ['terraform']
+  cmd: ['--help']
+  workdir: '/workspace'
+  user: 'terraform'

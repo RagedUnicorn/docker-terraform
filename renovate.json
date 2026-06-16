@@ -1,0 +1,67 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "ignorePaths": [
+    "docker-compose.yml",
+    "docker-compose.*.yml",
+    "examples/docker-compose.*.yml"
+  ],
+  "timezone": "Europe/Zurich",
+  "schedule": [
+    "on monday"
+  ],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "packageRules": [
+    {
+      "description": "Strip the leading 'v' from Terraform GitHub release tags",
+      "matchDatasources": [
+        "github-releases"
+      ],
+      "matchPackageNames": [
+        "hashicorp/terraform"
+      ],
+      "extractVersion": "^v(?<version>.*)$"
+    },
+    {
+      "description": "Automatically merge minor and patch updates for Alpine",
+      "matchPackageNames": [
+        "alpine"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Group all non-major updates together",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "matchPackageNames": [
+        "*"
+      ]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the Terraform version pinned via the renovate comment in the Dockerfile",
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+ARG .*?=(?<currentValue>.*)"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ]
+}

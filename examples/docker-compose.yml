@@ -1,0 +1,44 @@
+# Docker Compose example for a real Terraform workflow
+#
+# Demonstrates the runtime concerns that matter for Terraform specifically:
+#   - a writable working directory (state + lock file are written here)
+#   - host UID/GID matching so written files stay owned by you
+#   - a persistent provider plugin cache shared across runs
+#   - credentials injected via the environment, never baked into the image
+#
+# Usage (run subcommands one at a time - each is a separate invocation):
+#   docker compose -f examples/docker-compose.yml run --rm terraform init
+#   docker compose -f examples/docker-compose.yml run --rm terraform plan
+#   docker compose -f examples/docker-compose.yml run --rm terraform apply
+
+services:
+  terraform:
+    image: ragedunicorn/terraform:${TERRAFORM_VERSION:-latest}
+    container_name: terraform-example
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /workspace
+    volumes:
+      # This directory holds main.tf and will receive terraform.tfstate,
+      # .terraform.lock.hcl and .terraform/ - it must be writable.
+      - ./:/workspace
+      # Persist downloaded provider plugins across runs (hundreds of MB).
+      - terraform-plugin-cache:/home/terraform/.terraform.d/plugin-cache
+    environment:
+      - TF_PLUGIN_CACHE_DIR=/home/terraform/.terraform.d/plugin-cache
+      - TERM=xterm-256color
+      # Pass cloud credentials through from the host environment.
+      # Uncomment / extend for your provider of choice:
+      # - AWS_ACCESS_KEY_ID
+      # - AWS_SECRET_ACCESS_KEY
+      # - AWS_SESSION_TOKEN
+      # - AWS_REGION
+      # - GOOGLE_APPLICATION_CREDENTIALS
+      # - ARM_CLIENT_ID
+      # - ARM_CLIENT_SECRET
+      # - ARM_SUBSCRIPTION_ID
+      # - ARM_TENANT_ID
+    tty: true
+    init: true
+
+volumes:
+  terraform-plugin-cache:

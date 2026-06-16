@@ -1,0 +1,27 @@
+# Docker Compose configuration for running Terraform
+#
+# Usage:
+#   docker compose run --rm terraform init
+#   docker compose run --rm terraform plan
+#   docker compose run --rm terraform apply
+#   docker compose run --rm terraform --help
+#
+# Each Terraform subcommand is a separate invocation, so prefer
+# `docker compose run --rm terraform <subcommand>` over a fixed `command:`.
+
+services:
+  terraform:
+    image: ragedunicorn/terraform:${TERRAFORM_VERSION:-latest}
+    container_name: terraform
+    # Match the host user so files Terraform writes to the bind mount
+    # (terraform.tfstate, .terraform.lock.hcl, .terraform/) stay owned by you.
+    # Export UID/GID or set them in .env to override the 1000:1000 default.
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      # NOT read-only: Terraform must write state and the provider lock file here.
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - TERM=xterm-256color
+    tty: true
+    init: true

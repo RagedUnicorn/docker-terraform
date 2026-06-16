@@ -1,0 +1,57 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'Terraform version output'
+    command: 'terraform'
+    args: ['version']
+    exitCode: 0
+    expectedOutput:
+      - 'Terraform v'
+
+  - name: 'Terraform help command'
+    command: 'terraform'
+    args: ['--help']
+    exitCode: 0
+    expectedOutput:
+      - 'Usage: terraform'
+
+  - name: 'Working directory is set correctly'
+    command: 'pwd'
+    exitCode: 0
+    expectedOutput:
+      - '/workspace'
+
+  - name: 'Runs as non-root terraform user'
+    command: 'id'
+    args: ['-un']
+    exitCode: 0
+    expectedOutput:
+      - 'terraform'
+
+  - name: 'Git runtime dependency is available'
+    command: 'git'
+    args: ['--version']
+    exitCode: 0
+    expectedOutput:
+      - 'git version'
+
+  - name: 'Terraform fmt works on a writable config'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/tffmt && printf "output  \"x\"   {\n value=1\n}\n" > /tmp/tffmt/main.tf']
+    ]
+    command: 'terraform'
+    args: ['-chdir=/tmp/tffmt', 'fmt', '-no-color']
+    exitCode: 0
+    expectedOutput:
+      - 'main.tf'
+
+  - name: 'Terraform init and validate a trivial offline config'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/tfinit && printf "terraform {\n  required_version = \">= 1.0\"\n}\n\noutput \"greeting\" {\n  value = \"hello\"\n}\n" > /tmp/tfinit/main.tf']
+    ]
+    command: 'sh'
+    args: ['-c', 'cd /tmp/tfinit && terraform init -input=false -no-color && terraform validate -no-color']
+    exitCode: 0
+    expectedOutput:
+      - 'Terraform has been successfully initialized'
+      - 'The configuration is valid'

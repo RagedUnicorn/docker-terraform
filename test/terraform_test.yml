@@ -1,0 +1,37 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'Terraform binary exists'
+    path: '/usr/local/bin/terraform'
+    shouldExist: true
+    permissions: '-rwxr-xr-x'
+
+  - name: 'Workspace directory exists'
+    path: '/workspace'
+    shouldExist: true
+    permissions: 'drwxr-xr-x'
+
+  - name: 'Git binary exists (required for git-sourced modules)'
+    path: '/usr/bin/git'
+    shouldExist: true
+
+  - name: 'CA certificates for registry/backend HTTPS'
+    path: '/etc/ssl/certs/ca-certificates.crt'
+    shouldExist: true
+
+fileContentTests:
+  - name: 'CA certificates installed'
+    path: '/etc/ssl/certs/ca-certificates.crt'
+    expectedContents: ['-----BEGIN CERTIFICATE-----']
+
+commandTests:
+  - name: 'Terraform is executable'
+    command: 'terraform'
+    args: ['version']
+    exitCode: 0
+
+  - name: 'Working directory is set correctly'
+    command: 'pwd'
+    exitCode: 0
+    expectedOutput:
+      - '/workspace'
