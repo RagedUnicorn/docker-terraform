@@ -134,7 +134,10 @@ This project uses [Renovate](https://docs.renovatebot.com/) to manage updates:
 
 - **Terraform**: tracked via the GitHub releases datasource; the `v` prefix is
   stripped via an `extractVersion` rule in `renovate.json`.
-- **Alpine Linux**: tracked via the Docker datasource on the `FROM` lines.
+- **Alpine Linux**: tracked via the Docker datasource on the `FROM` lines; regex
+  `customManagers` in `renovate.json` also keep the
+  `org.opencontainers.image.base.name` label and the metadata test value in sync,
+  so all four update together in one PR.
 
 When Renovate creates a PR:
 
@@ -145,8 +148,10 @@ When Renovate creates a PR:
 
 Manual updates are rarely needed. If required, edit `ARG TERRAFORM_VERSION` in
 the Dockerfile (and the `FROM alpine:X.Y.Z` lines for Alpine), then rebuild and
-test. Remember to keep the `org.opencontainers.image.base.name` label and the
-metadata test in sync with the Alpine version.
+test. When changing Alpine manually, update all four spots together — both
+`FROM` lines, the `org.opencontainers.image.base.name` label, and the metadata
+test value — since they are otherwise only kept in sync automatically by
+Renovate.
 
 ## Code Style and Best Practices
 

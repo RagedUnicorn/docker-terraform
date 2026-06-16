@@ -173,9 +173,10 @@ add stricter version assertions, remember to update them on every Renovate bump.
    overridden by CI/CD. Always test your local `:test` build.
 2. **Label value mismatches** - the `org.opencontainers.image.version` and
    `created` labels are dynamic and set at build time.
-3. **Alpine version drift** - if you bump Alpine, update both the
-   `org.opencontainers.image.base.name` label in the Dockerfile and the
-   matching value in `test/terraform_metadata_test.yml`.
+3. **Alpine version drift** - Renovate keeps the `FROM` lines, the
+   `org.opencontainers.image.base.name` label, and the matching value in
+   `test/terraform_metadata_test.yml` in sync via `customManagers`. Only a manual
+   edit that touches one of these without the others can cause drift.
 
 ### Permission Errors
 
@@ -218,7 +219,8 @@ The `test-all` service returns:
 When updating the image:
 
 1. **Terraform version updates**: usually no test changes needed (version-prefix matching)
-2. **Alpine version updates**: update the `base.name` label and metadata test value
+2. **Alpine version updates**: handled by Renovate, which bumps the `FROM` lines,
+   the `base.name` label, and the metadata test value together (no manual change needed)
 3. **New functionality**: add corresponding tests
 4. **Label changes**: update the metadata test to match
 
