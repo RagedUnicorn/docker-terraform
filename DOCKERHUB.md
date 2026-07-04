@@ -22,6 +22,15 @@ docker run --rm ragedunicorn/terraform:latest version
 docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:latest init
 ```
 
+On Windows, use the PowerShell form - `${PWD}` **with braces** and the colon
+inside the quotes (without braces PowerShell parses `$PWD:` as a
+scope-qualified variable, as in `$env:PATH`, and rejects the argument):
+
+```powershell
+# Run against a configuration in the current directory
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest init
+```
+
 ## Features
 
 - 🪶 **Small footprint**: minimal Alpine-based runtime image
@@ -41,12 +50,24 @@ docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:latest plan
 docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:latest apply
 ```
 
+PowerShell:
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest init
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest plan
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest apply
+```
+
 ### Match host user for bind-mount ownership
 
 ```bash
 docker run --rm --user "$(id -u):$(id -g)" \
   -v "$(pwd)":/workspace ragedunicorn/terraform:latest init
 ```
+
+On Windows hosts this is not needed: Docker Desktop bind mounts do not carry
+Unix file ownership, so `--user` matching has no effect (and `id` does not
+exist in PowerShell).
 
 ### Persist the provider plugin cache
 
@@ -58,12 +79,30 @@ docker run --rm \
   ragedunicorn/terraform:latest init
 ```
 
+PowerShell:
+
+```powershell
+docker run --rm `
+  -v "${PWD}:/workspace" `
+  -v terraform-plugin-cache:/home/terraform/.terraform.d/plugin-cache `
+  -e TF_PLUGIN_CACHE_DIR=/home/terraform/.terraform.d/plugin-cache `
+  ragedunicorn/terraform:latest init
+```
+
 ### Pass cloud credentials via the environment
 
 ```bash
 docker run --rm \
   -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_REGION \
   -v "$(pwd)":/workspace ragedunicorn/terraform:latest apply
+```
+
+PowerShell:
+
+```powershell
+docker run --rm `
+  -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_REGION `
+  -v "${PWD}:/workspace" ragedunicorn/terraform:latest apply
 ```
 
 ## Runtime Notes
