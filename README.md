@@ -1,6 +1,6 @@
 # docker-terraform
 
-![](./docs/docker_terraform.png)
+![](./docs/docker_terraform_banner.svg)
 
 [![Release Build](https://github.com/RagedUnicorn/docker-terraform/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-terraform/actions/workflows/docker_release.yml)
 [![Test](https://github.com/RagedUnicorn/docker-terraform/actions/workflows/test.yml/badge.svg)](https://github.com/RagedUnicorn/docker-terraform/actions/workflows/test.yml)
