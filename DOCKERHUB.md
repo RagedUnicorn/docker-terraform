@@ -1,6 +1,6 @@
 # Terraform Alpine Docker Image
 
-![Docker Terraform](https://raw.githubusercontent.com/RagedUnicorn/docker-terraform/master/docs/docker_terraform.png)
+![Docker Terraform](https://raw.githubusercontent.com/RagedUnicorn/docker-terraform/master/docs/docker_terraform_banner.png)
 
 A lightweight Terraform CLI build on Alpine Linux. The official Terraform release
 is GPG- and checksum-verified at build time, then shipped as a non-root,
