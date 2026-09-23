@@ -1,10 +1,10 @@
 ############################################
 # Download + verify stage
 ############################################
-FROM alpine:3.24.1 AS build
+FROM alpine:3.24.2 AS build
 
 # renovate: datasource=github-releases depName=hashicorp/terraform
-ARG TERRAFORM_VERSION=1.16.0
+ARG TERRAFORM_VERSION=1.16.4
 # Provided automatically by buildx (linux/amd64 -> amd64, linux/arm64 -> arm64)
 ARG TARGETARCH
 
@@ -40,7 +40,7 @@ RUN set -eux; \
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.24.1
+FROM alpine:3.24.2
 
 ARG BUILD_DATE
 ARG VERSION
@@ -55,7 +55,7 @@ LABEL org.opencontainers.image.title="Terraform on Alpine Linux" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.1"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.2"
 
 # Runtime dependencies:
 #   git            - Terraform shells out to git for git-sourced modules
