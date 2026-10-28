@@ -19,18 +19,21 @@ RUN apk add --no-cache --update curl unzip gnupg
 WORKDIR /tmp/build
 
 # Download the Terraform release, then verify it end to end:
-#   1. gpg-verify SHA256SUMS against SHA256SUMS.sig using HashiCorp's public key
+#   1. gpg-verify SHA256SUMS against SHA256SUMS.sig and require the signature
+#      to come from HashiCorp's pinned release-signing key
 #   2. verify the zip's checksum against the now-trusted SHA256SUMS
 RUN set -eux; \
     base="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}"; \
     file="terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip"; \
     sums="terraform_${TERRAFORM_VERSION}_SHA256SUMS"; \
+    # Primary fingerprint of HashiCorp's release-signing key (https://www.hashicorp.com/en/trust/security)
+    hashicorp_fpr="C874011F0AB405110D02105534365D9472D7468F"; \
     curl -fsSLO "${base}/${file}"; \
     curl -fsSLO "${base}/${sums}"; \
     curl -fsSLO "${base}/${sums}.sig"; \
-    # HashiCorp's published GPG public key (also mirrored on keybase.io/hashicorp
     curl -fsSL https://www.hashicorp.com/.well-known/pgp-key.txt | gpg --import; \
-    gpg --verify "${sums}.sig" "${sums}"; \
+    gpg --status-fd 1 --verify "${sums}.sig" "${sums}" > gpg-status; \
+    grep -q "^\[GNUPG:\] VALIDSIG .* ${hashicorp_fpr}\$" gpg-status; \
     grep " ${file}\$" "${sums}" > "${file}.sha256"; \
     [ -s "${file}.sha256" ]; \
     sha256sum -c "${file}.sha256"; \
