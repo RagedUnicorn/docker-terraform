@@ -76,18 +76,18 @@ docker build -t ragedunicorn/terraform:dev .
 
 # Build with version metadata
 docker build \
-  --build-arg TERRAFORM_VERSION=1.9.8 \
+  --build-arg TERRAFORM_VERSION=1.17.0 \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
-  --build-arg VERSION=1.9.8-alpine3.22.1-1 \
-  -t ragedunicorn/terraform:1.9.8-alpine3.22.1-1 .
+  --build-arg VERSION=1.17.0-alpine3.24.3-1 \
+  -t ragedunicorn/terraform:1.17.0-alpine3.24.3-1 .
 
 # Multi-platform build (requires buildx). Do NOT set TARGETARCH by hand.
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --build-arg TERRAFORM_VERSION=1.9.8 \
-  --build-arg VERSION=1.9.8-alpine3.22.1-1 \
+  --build-arg TERRAFORM_VERSION=1.17.0 \
+  --build-arg VERSION=1.17.0-alpine3.24.3-1 \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
-  -t ragedunicorn/terraform:1.9.8-alpine3.22.1-1 .
+  -t ragedunicorn/terraform:1.17.0-alpine3.24.3-1 .
 ```
 
 ### 3. Testing Your Changes

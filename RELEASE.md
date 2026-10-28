@@ -6,8 +6,8 @@ This document describes how to create a new release for the Docker Terraform pro
 
 ```bash
 # Tag format: v{terraform_version}-alpine{alpine_version}-{build_number}
-git tag -a v1.9.8-alpine3.22.1-1 -m "v1.9.8-alpine3.22.1-1"
-git push origin v1.9.8-alpine3.22.1-1
+git tag -a v1.16.0-alpine3.24.1-1 -m "v1.16.0-alpine3.24.1-1"
+git push origin v1.16.0-alpine3.24.1-1
 ```
 
 This automatically triggers the release process via GitHub Actions.
@@ -19,10 +19,10 @@ See [README.md](README.md#versioning) for the complete versioning documentation.
 **Format:** `v{terraform_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `v1.9.8-alpine3.22.1-1` - Initial release
-- `v1.9.8-alpine3.22.1-2` - Rebuild with the same versions
-- `v1.9.8-alpine3.22.2-1` - Alpine patch update (build resets to 1)
-- `v1.10.0-alpine3.22.1-1` - Terraform update (build resets to 1)
+- `v1.16.0-alpine3.24.1-1` - First build of Terraform 1.16.0 on Alpine 3.24.1
+- `v1.16.0-alpine3.24.1-2` - Rebuild with the same versions
+- `v1.16.0-alpine3.24.2-1` - Alpine patch update (build resets to 1)
+- `v1.17.0-alpine3.24.1-1` - Terraform update (build resets to 1)
 
 ## Release Workflow
 
@@ -32,8 +32,8 @@ When you push a tag, GitHub Actions automatically:
    - Runs the full Container Structure Test suite first and fails fast if it breaks
    - Multi-platform: `linux/amd64` and `linux/arm64`
    - Pushes to both GitHub Container Registry and Docker Hub
-   - Publishes the full tag (`1.9.8-alpine3.22.1-1`), a bare Terraform version
-     tag (`1.9.8`) and `latest`
+   - Publishes the full tag (`1.16.0-alpine3.24.1-1`), a bare Terraform version
+     tag (`1.16.0`) and `latest`
 
 2. **Creates a GitHub Release** (`create-release` job in `.github/workflows/docker_release.yml`)
    - Runs only after the images were tested and pushed successfully
@@ -97,7 +97,7 @@ Before creating a release:
 
 ### Release didn't trigger
 
-- Ensure the tag starts with `v` and follows the format (e.g. `v1.9.8-alpine3.22.1-1`)
+- Ensure the tag starts with `v` and follows the format (e.g. `v1.16.0-alpine3.24.1-1`)
 - Check the GitHub Actions tab for workflow runs
 - Verify you have push permissions
 
@@ -131,10 +131,10 @@ If automation fails, create a release manually:
 
 1. Go to the repository's "Releases" page
 2. Click "Create a new release"
-3. Choose your tag (must follow the format: `v1.9.8-alpine3.22.1-1`)
+3. Choose your tag (must follow the format: `v1.16.0-alpine3.24.1-1`)
 4. Add release notes
 5. Include Docker pull commands:
    ```
-   docker pull ghcr.io/ragedunicorn/docker-terraform:1.9.8-alpine3.22.1-1
-   docker pull ragedunicorn/terraform:1.9.8-alpine3.22.1-1
+   docker pull ghcr.io/ragedunicorn/docker-terraform:1.16.0-alpine3.24.1-1
+   docker pull ragedunicorn/terraform:1.16.0-alpine3.24.1-1
    ```

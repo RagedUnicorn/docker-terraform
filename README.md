@@ -68,11 +68,11 @@ a separate invocation.
 # Using latest version
 docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:latest [terraform-args]
 
-# Using a specific Terraform version
-docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.9.8 [terraform-args]
+# Using a specific Terraform version (bare tags are published for releases after 1.16.0)
+docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.17.0 [terraform-args]
 
 # Using an exact version combination
-docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.9.8-alpine3.22.1-1 [terraform-args]
+docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.16.0-alpine3.24.1-1 [terraform-args]
 ```
 
 PowerShell:
@@ -81,11 +81,11 @@ PowerShell:
 # Using latest version
 docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest [terraform-args]
 
-# Using a specific Terraform version
-docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.9.8 [terraform-args]
+# Using a specific Terraform version (bare tags are published for releases after 1.16.0)
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.17.0 [terraform-args]
 
 # Using an exact version combination
-docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.9.8-alpine3.22.1-1 [terraform-args]
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.16.0-alpine3.24.1-1 [terraform-args]
 ```
 
 ### Examples
@@ -260,12 +260,17 @@ docker compose run --rm terraform apply
 
 The base `docker-compose.yml` mounts the current directory (writable) at
 `/workspace` and matches your host UID/GID. Export `UID`/`GID` first so they are
-available to compose:
+available to compose - bash sets `UID` but not `GID`, so assign it explicitly
+(otherwise it silently falls back to `1000`):
 
 ```bash
-export UID GID
+export UID
+export GID="$(id -g)"
 docker compose run --rm terraform init
 ```
+
+On Windows hosts this step is unnecessary (see
+[Match the host user](#match-the-host-user-for-bind-mount-ownership)).
 
 ### Example Configuration
 
@@ -306,7 +311,7 @@ This project uses versioning that matches the Docker image contents:
 **Format:** `{terraform_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `1.9.8-alpine3.22.1-1` - Terraform 1.9.8 on Alpine 3.22.1, build 1
+- `1.16.0-alpine3.24.1-1` - Terraform 1.16.0 on Alpine 3.24.1, build 1
 - `latest` - Most recent stable release
 
 The build number resets to `1` whenever Terraform is bumped, and is incremented

@@ -13,7 +13,7 @@ single-purpose image with `terraform` as its entrypoint.
 docker pull ragedunicorn/terraform:latest
 
 # Or pull a specific version
-docker pull ragedunicorn/terraform:1.9.8-alpine3.22.1-1
+docker pull ragedunicorn/terraform:1.16.0-alpine3.24.1-1
 
 # Show the version
 docker run --rm ragedunicorn/terraform:latest version
@@ -121,10 +121,10 @@ This image uses versioning that includes all component versions:
 
 ### Version Examples
 
-- `1.9.8-alpine3.22.1-1` - Initial release with Terraform 1.9.8 and Alpine 3.22.1
-- `1.9.8-alpine3.22.1-2` - Rebuild of the same versions (base CVE patch, fixes)
-- `1.9.8-alpine3.22.2-1` - Alpine Linux patch update
-- `1.10.0-alpine3.22.1-1` - Terraform version update (build resets to 1)
+- `1.16.0-alpine3.24.1-1` - Terraform 1.16.0 on Alpine 3.24.1, first build
+- `1.16.0-alpine3.24.1-2` - Rebuild of the same versions (base CVE patch, fixes)
+- `1.16.0-alpine3.24.2-1` - Alpine Linux patch update
+- `1.17.0-alpine3.24.1-1` - Terraform version update (build resets to 1)
 
 ## License
 

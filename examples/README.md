@@ -24,6 +24,18 @@ docker run --rm -v "$(pwd)/examples":/workspace ragedunicorn/terraform:latest ap
 docker run --rm -v "$(pwd)/examples":/workspace ragedunicorn/terraform:latest output
 ```
 
+On Windows, use the PowerShell form - `${PWD}` **with braces** and the colon
+inside the quotes (see the
+[Windows (PowerShell) notes](../README.md#windows-powershell-notes)):
+
+```powershell
+# From the repository root - run each subcommand on its own.
+docker run --rm -v "${PWD}/examples:/workspace" ragedunicorn/terraform:latest init
+docker run --rm -v "${PWD}/examples:/workspace" ragedunicorn/terraform:latest plan
+docker run --rm -v "${PWD}/examples:/workspace" ragedunicorn/terraform:latest apply -auto-approve
+docker run --rm -v "${PWD}/examples:/workspace" ragedunicorn/terraform:latest output
+```
+
 ### Using Docker Compose
 
 ```bash
@@ -47,13 +59,21 @@ docker run --rm -v "$(pwd)/examples":/workspace ragedunicorn/terraform:latest \
   apply -auto-approve -var name=terraform
 ```
 
+PowerShell:
+
+```powershell
+docker run --rm -v "${PWD}/examples:/workspace" ragedunicorn/terraform:latest `
+  apply -auto-approve -var name=terraform
+```
+
 ## Notes for Real Configurations
 
 - **Writable workspace.** Do not mount `/workspace` read-only - Terraform writes
   `terraform.tfstate`, `.terraform.lock.hcl` and `.terraform/`.
 - **File ownership.** The image runs as the non-root `terraform` user. Match your
   host user with `--user "$(id -u):$(id -g)"` (docker run) or the `user:` field
-  (compose) so generated files stay owned by you.
+  (compose) so generated files stay owned by you. Not needed on Windows hosts -
+  Docker Desktop bind mounts do not carry Unix file ownership.
 - **Provider cache.** `terraform init` downloads provider plugins (often hundreds
   of MB). The compose example mounts a named volume and sets
   `TF_PLUGIN_CACHE_DIR` so plugins survive across runs.
