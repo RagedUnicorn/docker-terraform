@@ -106,19 +106,19 @@ docker buildx build --load --provenance=false -t ragedunicorn/terraform:test .
 **Linux/macOS:**
 
 ```bash
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml run test-all
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-$env:TERRAFORM_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:TERRAFORM_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
-set TERRAFORM_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set TERRAFORM_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Important:** Never test against remote images - they may have different labels

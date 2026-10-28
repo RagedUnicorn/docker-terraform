@@ -10,12 +10,12 @@ Structure Tests.
 docker buildx build --load --provenance=false -t ragedunicorn/terraform:test .
 
 # Run all tests
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml run test-all
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Run individual test suites
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test          # File structure
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test-command  # Command execution
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata # Metadata
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test          # File structure
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command  # Command execution
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata # Metadata
 ```
 
 ## Test Structure
@@ -78,19 +78,19 @@ docker buildx build --load --provenance=false -t ragedunicorn/terraform:test .
 **Linux/macOS:**
 
 ```bash
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml run test-all
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-$env:TERRAFORM_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:TERRAFORM_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
-set TERRAFORM_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set TERRAFORM_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Why local testing is important:**
@@ -106,21 +106,21 @@ set TERRAFORM_VERSION=test && docker compose -f docker-compose.test.yml run test
 
 ```bash
 # File structure tests
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
 
 # Command execution tests
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata tests
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-$env:TERRAFORM_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
-$env:TERRAFORM_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
-$env:TERRAFORM_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
+$env:TERRAFORM_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
+$env:TERRAFORM_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:TERRAFORM_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 ## Troubleshooting Test Failures
@@ -153,7 +153,7 @@ Rebuild as a single-platform image loaded into the daemon, then re-run:
 
 ```bash
 docker buildx build --load --provenance=false -t ragedunicorn/terraform:test .
-TERRAFORM_VERSION=test docker compose -f docker-compose.test.yml run test-all
+TERRAFORM_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 This happens most often with the containerd image store enabled in Docker
