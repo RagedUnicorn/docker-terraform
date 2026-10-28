@@ -25,7 +25,7 @@ non-root, fully OCI-labelled image with `terraform` as its entrypoint.
 - **Single purpose**: `terraform` is the entrypoint - nothing else bundled
 - **Non-root user**: runs as the unprivileged `terraform` user
 - **Multi-architecture**: supports `linux/amd64` and `linux/arm64`
-- **git + openssh + ca-certificates**: included for module sources and registry/backend HTTPS
+- **git + openssh-client + ca-certificates**: included for module sources and registry/backend HTTPS
 
 ## Quick Start
 

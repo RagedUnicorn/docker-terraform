@@ -15,6 +15,14 @@ fileExistenceTests:
     path: '/usr/bin/git'
     shouldExist: true
 
+  - name: 'SSH client exists (required for git-over-ssh module sources)'
+    path: '/usr/bin/ssh'
+    shouldExist: true
+
+  - name: 'SSH server is not installed'
+    path: '/usr/sbin/sshd'
+    shouldExist: false
+
   - name: 'CA certificates for registry/backend HTTPS'
     path: '/etc/ssl/certs/ca-certificates.crt'
     shouldExist: true

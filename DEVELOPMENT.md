@@ -40,7 +40,7 @@ The Dockerfile uses two stages:
    verifies the zip against that checksum and unzips the single `terraform`
    binary. **This verification is the whole point of building our own image and
    must never be skipped.**
-2. **Runtime stage** - a clean Alpine image with `git`, `openssh` and
+2. **Runtime stage** - a clean Alpine image with `git`, `openssh-client` and
    `ca-certificates`, a non-root `terraform` user, and the verified binary copied
    in from the build stage.
 

@@ -62,9 +62,9 @@ LABEL org.opencontainers.image.title="Terraform on Alpine Linux" \
 
 # Runtime dependencies:
 #   git            - Terraform shells out to git for git-sourced modules
-#   openssh        - git-over-ssh module sources
+#   openssh-client - ssh for git-over-ssh module sources (client only, no sshd)
 #   ca-certificates - HTTPS to provider/module registries and remote backends
-RUN apk add --no-cache --update git openssh ca-certificates
+RUN apk add --no-cache --update git openssh-client ca-certificates
 
 # Allow git to operate on bind-mounted working copies owned by another uid,
 # avoiding "detected dubious ownership" errors for git-sourced modules.

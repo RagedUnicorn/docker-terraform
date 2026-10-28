@@ -38,7 +38,7 @@ docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest init
 - 🎯 **Single purpose**: `terraform` is the entrypoint, nothing else bundled
 - 🔒 **Runs as non-root**: executes as the unprivileged `terraform` user
 - 🏗️ **Multi-platform**: supports `linux/amd64` and `linux/arm64`
-- 🧩 **git + openssh + ca-certificates**: ready for module sources and registry/backend HTTPS
+- 🧩 **git + openssh-client + ca-certificates**: ready for module sources and registry/backend HTTPS
 
 ## Usage Examples
 
