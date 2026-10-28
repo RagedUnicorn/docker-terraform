@@ -37,7 +37,7 @@ jobs:
             VERSION=test
 
       - name: Pull Container Structure Test image
-        run: docker pull ragedunicorn/container-test:latest
+        run: docker compose -f docker-compose.test.yml pull
 
       - name: Run File Structure Tests
         id: file-tests
