@@ -1,20 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ],
-  "ignorePaths": [
-    "docker-compose.yml",
-    "docker-compose.*.yml",
-    "examples/docker-compose.*.yml"
-  ],
-  "timezone": "Europe/Zurich",
-  "schedule": [
-    "on monday"
-  ],
-  "labels": [
-    "dependencies",
-    "renovate"
+    "github>RagedUnicorn/renovate-config"
   ],
   "packageRules": [
     {
@@ -26,79 +13,6 @@
         "hashicorp/terraform"
       ],
       "extractVersion": "^v(?<version>.*)$"
-    },
-    {
-      "description": "Automatically merge minor and patch updates for Alpine",
-      "matchPackageNames": [
-        "alpine"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true
-    },
-    {
-      "description": "Group all non-major updates together",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch",
-      "matchPackageNames": [
-        "*"
-      ]
-    }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Update the Terraform version pinned via the renovate comment in the Dockerfile",
-      "managerFilePatterns": [
-        "/^Dockerfile$/"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+ARG .*?=(?<currentValue>.*)"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the container-structure-test harness pin in .env up to date",
-      "managerFilePatterns": [
-        "/^\\.env$/"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+CONTAINER_STRUCTURE_TEST_VERSION=(?<currentValue>.*)"
-      ],
-      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-alpine[\\d.]+-(?<build>\\d+)$"
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the Alpine base.name OCI label in the Dockerfile in sync with the FROM version",
-      "managerFilePatterns": [
-        "/^Dockerfile$/"
-      ],
-      "datasourceTemplate": "docker",
-      "depNameTemplate": "alpine",
-      "versioningTemplate": "docker",
-      "matchStrings": [
-        "image\\.base\\.name=\"docker\\.io/library/alpine:(?<currentValue>[^\"]+)\""
-      ]
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the Alpine version in the metadata test in sync with the FROM version",
-      "managerFilePatterns": [
-        "/^test/terraform_metadata_test\\.yml$/"
-      ],
-      "datasourceTemplate": "docker",
-      "depNameTemplate": "alpine",
-      "versioningTemplate": "docker",
-      "matchStrings": [
-        "docker\\.io/library/alpine:(?<currentValue>[^']+)'"
-      ]
     }
   ]
 }
