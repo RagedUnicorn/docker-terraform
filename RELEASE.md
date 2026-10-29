@@ -32,6 +32,8 @@ When you push a tag, GitHub Actions automatically:
    - Runs the full Container Structure Test suite first and fails fast if it breaks
    - Multi-platform: `linux/amd64` and `linux/arm64`
    - Pushes to both GitHub Container Registry and Docker Hub
+   - Attaches SBOM and provenance (`mode=max`) attestations
+   - Signs the pushed digest in both registries with cosign keyless signing (GitHub OIDC)
    - Publishes the full tag (`1.16.0-alpine3.24.1-1`), a bare Terraform version
      tag (`1.16.0`) and `latest`
 
