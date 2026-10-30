@@ -74,21 +74,28 @@ terraform -chdir=/workspace init
 # Basic build (BuildKit supplies TARGETARCH automatically)
 docker build -t ragedunicorn/terraform:dev .
 
-# Build with version metadata
+# Build with version metadata (Terraform and Alpine come from the Dockerfile)
 docker build \
-  --build-arg TERRAFORM_VERSION=1.17.0 \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
-  --build-arg VERSION=1.17.0-alpine3.24.3-1 \
-  -t ragedunicorn/terraform:1.17.0-alpine3.24.3-1 .
+  --build-arg VERSION=dev \
+  -t ragedunicorn/terraform:dev .
+
+# Build a different Terraform version than the Dockerfile default
+docker build \
+  --build-arg TERRAFORM_VERSION=<terraform-version> \
+  -t ragedunicorn/terraform:dev .
 
 # Multi-platform build (requires buildx). Do NOT set TARGETARCH by hand.
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --build-arg TERRAFORM_VERSION=1.17.0 \
-  --build-arg VERSION=1.17.0-alpine3.24.3-1 \
+  --build-arg VERSION=dev \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
-  -t ragedunicorn/terraform:1.17.0-alpine3.24.3-1 .
+  -t ragedunicorn/terraform:dev .
 ```
+
+The Terraform version is the `TERRAFORM_VERSION` default in the `Dockerfile`
+and the Alpine version is its `FROM` line. Renovate keeps both current, so the
+docs do not repeat them.
 
 ### 3. Testing Your Changes
 

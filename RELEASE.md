@@ -6,8 +6,10 @@ This document describes how to create a new release for the Docker Terraform pro
 
 ```bash
 # Tag format: v{terraform_version}-alpine{alpine_version}-{build_number}
-git tag -a v1.16.0-alpine3.24.1-1 -m "v1.16.0-alpine3.24.1-1"
-git push origin v1.16.0-alpine3.24.1-1
+# Take the versions from the Dockerfile (TERRAFORM_VERSION and the FROM line)
+TAG=v<terraform-version>-alpine<alpine-version>-<build>
+git tag -a "$TAG" -m "$TAG"
+git push origin "$TAG"
 ```
 
 This automatically triggers the release process via GitHub Actions.
@@ -18,11 +20,11 @@ See [README.md](README.md#versioning) for the complete versioning documentation.
 
 **Format:** `v{terraform_version}-alpine{alpine_version}-{build_number}`
 
-Examples:
-- `v1.16.0-alpine3.24.1-1` - First build of Terraform 1.16.0 on Alpine 3.24.1
-- `v1.16.0-alpine3.24.1-2` - Rebuild with the same versions
-- `v1.16.0-alpine3.24.2-1` - Alpine patch update (build resets to 1)
-- `v1.17.0-alpine3.24.1-1` - Terraform update (build resets to 1)
+Examples (`X.Y.Z` is the Terraform version, `A.B.C` the Alpine version):
+- `vX.Y.Z-alpineA.B.C-1` - First build of Terraform X.Y.Z on Alpine A.B.C
+- `vX.Y.Z-alpineA.B.C-2` - Rebuild with the same versions
+- `vX.Y.Z-alpineA.B.D-1` - Alpine patch update (build resets to 1)
+- `vX.Y+1.0-alpineA.B.C-1` - Terraform update (build resets to 1)
 
 ## Release Workflow
 
@@ -34,8 +36,8 @@ When you push a tag, GitHub Actions automatically:
    - Pushes to both GitHub Container Registry and Docker Hub
    - Attaches SBOM and provenance (`mode=max`) attestations
    - Signs the pushed digest in both registries with cosign keyless signing (GitHub OIDC)
-   - Publishes the full tag (`1.16.0-alpine3.24.1-1`), a bare Terraform version
-     tag (`1.16.0`) and `latest`
+   - Publishes the full tag (`X.Y.Z-alpineA.B.C-N`), a bare Terraform version
+     tag (`X.Y.Z`) and `latest`
 
 2. **Creates a GitHub Release** (`create-release` job in `.github/workflows/docker_release.yml`)
    - Runs only after the images were tested and pushed successfully
@@ -61,16 +63,19 @@ Create a new release when:
 
 ### Update Docker Hub Documentation
 
-After creating a release, update the Docker Hub repository description:
+`DOCKERHUB.md` is the source of truth for the Docker Hub repository
+description. It deliberately contains no concrete versions (readers find those
+in the Tags tab), so a release alone does not require a description update.
+Only when `DOCKERHUB.md` changed since the last sync:
 
 1. Go to [Docker Hub](https://hub.docker.com/r/ragedunicorn/terraform)
 2. Click "Manage Repository" → "Description"
 3. Copy the contents of `DOCKERHUB.md`
-4. Update any version numbers in the examples to match the latest release
-5. Save the changes
+4. Save the changes
 
-**Note**: `DOCKERHUB.md` is maintained in the repository as the source of truth
-for the Docker Hub description.
+**Note**: the sync stays manual on purpose. Docker Hub only offers an
+undocumented endpoint for description updates, and it needs a separate
+Read/Write/Delete access token.
 
 ## Best Practices
 
@@ -99,7 +104,7 @@ Before creating a release:
 
 ### Release didn't trigger
 
-- Ensure the tag starts with `v` and follows the format (e.g. `v1.16.0-alpine3.24.1-1`)
+- Ensure the tag starts with `v` and follows the format (e.g. `vX.Y.Z-alpineA.B.C-N`)
 - Check the GitHub Actions tab for workflow runs
 - Verify you have push permissions
 
@@ -133,10 +138,10 @@ If automation fails, create a release manually:
 
 1. Go to the repository's "Releases" page
 2. Click "Create a new release"
-3. Choose your tag (must follow the format: `v1.16.0-alpine3.24.1-1`)
+3. Choose your tag (must follow the format: `vX.Y.Z-alpineA.B.C-N`)
 4. Add release notes
-5. Include Docker pull commands:
+5. Include Docker pull commands (the tag without the leading `v`):
    ```
-   docker pull ghcr.io/ragedunicorn/docker-terraform:1.16.0-alpine3.24.1-1
-   docker pull ragedunicorn/terraform:1.16.0-alpine3.24.1-1
+   docker pull ghcr.io/ragedunicorn/docker-terraform:<tag>
+   docker pull ragedunicorn/terraform:<tag>
    ```

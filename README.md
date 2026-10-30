@@ -69,10 +69,10 @@ a separate invocation.
 docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:latest [terraform-args]
 
 # Using a specific Terraform version (bare tags are published for releases after 1.16.0)
-docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.17.0 [terraform-args]
+docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:<terraform-version> [terraform-args]
 
 # Using an exact version combination
-docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:1.16.0-alpine3.24.1-1 [terraform-args]
+docker run --rm -v "$(pwd)":/workspace ragedunicorn/terraform:<terraform-version>-alpine<alpine-version>-<build> [terraform-args]
 ```
 
 PowerShell:
@@ -82,11 +82,14 @@ PowerShell:
 docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:latest [terraform-args]
 
 # Using a specific Terraform version (bare tags are published for releases after 1.16.0)
-docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.17.0 [terraform-args]
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:<terraform-version> [terraform-args]
 
 # Using an exact version combination
-docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:1.16.0-alpine3.24.1-1 [terraform-args]
+docker run --rm -v "${PWD}:/workspace" ragedunicorn/terraform:<terraform-version>-alpine<alpine-version>-<build> [terraform-args]
 ```
+
+Available tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/terraform/tags) and in the
+[GitHub releases](https://github.com/RagedUnicorn/docker-terraform/releases).
 
 ### Examples
 
@@ -310,9 +313,12 @@ This project uses versioning that matches the Docker image contents:
 
 **Format:** `{terraform_version}-alpine{alpine_version}-{build_number}`
 
-Examples:
-- `1.16.0-alpine3.24.1-1` - Terraform 1.16.0 on Alpine 3.24.1, build 1
+Examples (`X.Y.Z` is the Terraform version, `A.B.C` the Alpine version):
+- `X.Y.Z-alpineA.B.C-1` - Terraform X.Y.Z on Alpine A.B.C, build 1
+- `X.Y.Z` - Most recent build of Terraform X.Y.Z
 - `latest` - Most recent stable release
+
+The current tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/terraform/tags).
 
 The build number resets to `1` whenever Terraform is bumped, and is incremented
 only for rebuilds that leave the Terraform version unchanged (an Alpine patch or
