@@ -328,6 +328,9 @@ base CVE fix). For the detailed release process, see [RELEASE.md](RELEASE.md).
 
 Released images are signed with [cosign](https://docs.sigstore.dev/) keyless signing and carry SBOM and provenance attestations.
 
+Verification requires cosign v3 or later: the release workflow signs with cosign v3, whose signatures cosign v2 does
+not find (it reports `no signatures found`).
+
 ```bash
 # Verify the signature (works for both ghcr.io/ragedunicorn/docker-terraform and ragedunicorn/terraform)
 cosign verify ragedunicorn/terraform:latest \
